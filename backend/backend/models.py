@@ -22,6 +22,7 @@ class Organization(models.Model):
     money = models.IntegerField()
     lobbyists = models.IntegerField()
     lobbyists_with_access = models.IntegerField()
+    registered = models.BooleanField(default=False)
     explore_url = models.CharField(max_length=128)
     def __unicode__(self):
         return self.name
