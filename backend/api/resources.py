@@ -1,3 +1,4 @@
+from tastypie.constants import ALL
 from tastypie.fields import ToOneField
 from tastypie.resources import ModelResource
 from backend.models import Portofolio, Member, Meeting
@@ -18,3 +19,7 @@ class MeetingResource(ModelResource):
     class Meta:
         queryset = Meeting.objects.all()
         allowed_methods = ['get']
+        filtering = {
+            'date': ALL,
+            'member': ALL
+        }
