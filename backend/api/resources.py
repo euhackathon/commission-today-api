@@ -34,7 +34,8 @@ class OrganizationResource(ModelResource):
 
 class MeetingResource(ModelResource):
     member = ToOneField(MemberResource, 'member', full=True)
-    organization = ToOneField(OrganizationResource, 'organization', full=True)
+    organization = ToOneField(OrganizationResource, 'organization', full=True,
+                              null=True)
     class Meta:
         queryset = Meeting.objects.all()
         allowed_methods = ['get']
