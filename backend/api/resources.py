@@ -9,6 +9,15 @@ class PortofolioResource(ModelResource):
         queryset = Portofolio.objects.all()
         allowed_methods = ['get']
 
+    def dehydrate(self, bundle):
+        bundle = super(PortofolioResource, self).dehydrate(bundle)
+        shorthand = bundle.data.get('shorthand', '')
+        if shorthand != '':
+            bundle.data['name'] = shorthand
+        bundle.data.pop('shorthand')
+        return bundle
+
+
 class MemberResource(ModelResource):
     portofolio = ToOneField(PortofolioResource, 'portofolio', full=True)
     class Meta:

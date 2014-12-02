@@ -2,7 +2,10 @@ from django.db import models
 
 class Portofolio(models.Model):
     name = models.CharField(max_length=128)
+    shorthand = models.CharField(max_length=128, default='')
     def __str__(self):
+        if self.shorthand:
+            return self.shorthand
         return self.name
 
 class Member(models.Model):
