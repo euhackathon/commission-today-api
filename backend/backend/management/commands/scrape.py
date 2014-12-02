@@ -15,7 +15,8 @@ class Command(BaseCommand):
         self.update_members_urls()
         members = Member.objects.all()
         for member in members:
-            self.parse_member(member)
+            # self.parse_member(member)
+            self.parse_cabinet(member)
 
     def update_members_urls(self):
         """Parse http://ec.europa.eu/commission/2014-2019/, get the URLs and
@@ -42,6 +43,7 @@ class Command(BaseCommand):
                 portofolioModel = Portofolio(name=portofolio)
                 portofolioModel.save()
 
+            portofolioModel = Portofolio.objects.get(name=portofolio)
             if not Member.objects.filter(name=name):
                 memberModel = Member(name=name,
                                      photoUrl=photoUrl,
@@ -54,19 +56,77 @@ class Command(BaseCommand):
                 print 'was already saved', name
 
         # Also get the president because he is special
-        president = soup.find(class_='team-members-president')
-        url = president.find('a')['href']
-        photoUrl = president.find('img')['src']
-        name = 'Jean-Claude Juncker'
-        rank = 'President'
-        portofolioModel = Portofolio(name='President')
-        portofolioModel.save()
-        presidentModel = Member(name=name,
-                                photoUrl=photoUrl,
-                                rank=rank,
-                                portofolio=portofolioModel,
-                                url=url)
-        presidentModel.save()
+        if not Member.objects.filter(name='Jean-Claude Juncker'):
+            president = soup.find(class_='team-members-president')
+            url = president.find('a')['href']
+            photoUrl = president.find('img')['src']
+            name = 'Jean-Claude Juncker'
+            rank = 'President'
+            portofolioModel = Portofolio(name='President')
+            portofolioModel.save()
+            presidentModel = Member(name=name,
+                                    photoUrl=photoUrl,
+                                    rank=rank,
+                                    portofolio=portofolioModel,
+                                    url=url)
+            presidentModel.save()
+
+    def parse_cabinet(self, member):
+        try:
+            request = requests.get(member.url)
+        except requests.exceptions.RequestException as e:
+            print e
+            return
+
+        soup = BeautifulSoup(request.content)
+        urls = soup.find_all(class_='views-field-field-biography-agenda-text')[0].find_all('a')
+
+        # TODO @palcu: parse also the first table when we have an example
+        self.parse_table(urls[1]['href'], member)
+
+    def parse_table(self, url, member):
+        """I am not proud of what is written down here but, at least it works.
+        """
+        try:
+            request = requests.get(url)
+        except requests.exceptions.RequestException as e:
+            print e
+            return
+
+        soup = BeautifulSoup(request.content)
+        rows = soup.find_all('tr')[1:]
+        for row in rows:
+            cells = row.find_all('td')
+            # TODO @palcu: fix me !!!
+            try:
+                description = 'Meeting with {0} on {1}.'.format(cells[3].get_text().strip(),
+                                                                cells[4].get_text().strip())
+            except Exception as e:
+                continue
+            # TODO @palcu: fix me !!!
+            try:
+                date = datetime.strptime(cells[1].get_text().strip(), '%d/%m/%Y')
+            except Exception as e:
+                continue
+            # TODO @palcu: fix me !!!
+            try:
+                memberName = cells[0].get_text().strip()
+            except Exception as e:
+                continue
+            if not Member.objects.filter(name=memberName):
+                memberModel = Member(name=memberName,
+                                     rank='Cabinet',
+                                     portofolio=member.portofolio)
+                memberModel.save()
+                print 'saved'
+            else:
+                print 'already saved'
+            memberModel = Member.objects.get(name=memberName)
+            meeting = Meeting(date=date,
+                              description=description,
+                              member=memberModel,
+                              lobby=True)
+            meeting.save()
 
     def parse_member(self, member):
         """Parse every member in the database and add his agenda to our
