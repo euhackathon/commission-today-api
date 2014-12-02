@@ -1,3 +1,4 @@
+from tastypie.fields import ToOneField
 from tastypie.resources import ModelResource
 from backend.models import Portofolio, Member, Meeting
 
@@ -13,6 +14,7 @@ class MemberResource(ModelResource):
         allowed_methods = ['get']
 
 class MeetingResource(ModelResource):
+    member = ToOneField(MemberResource, 'member', full=True)
     class Meta:
         queryset = Meeting.objects.all()
         allowed_methods = ['get']
