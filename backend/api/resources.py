@@ -1,7 +1,7 @@
 from tastypie.constants import ALL
 from tastypie.fields import ToOneField
 from tastypie.resources import ModelResource
-from backend.models import Portofolio, Member, Meeting
+from backend.models import Portofolio, Member, Meeting, Organization
 import calendar
 
 
@@ -25,8 +25,17 @@ class MemberResource(ModelResource):
         queryset = Member.objects.all()
         allowed_methods = ['get']
 
+
+class OrganizationResource(ModelResource):
+    class Meta:
+        queryset = Organization.objects.all()
+        allowed_methods = ['get']
+
+
 class MeetingResource(ModelResource):
     member = ToOneField(MemberResource, 'member', full=True)
+    organization = ToOneField(OrganizationResource, 'organization', full=True,
+                              null=True)
     class Meta:
         queryset = Meeting.objects.all()
         allowed_methods = ['get']
