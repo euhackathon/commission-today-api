@@ -33,3 +33,7 @@ class MeetingResource(ModelResource):
             'date': ALL,
             'member': ALL
         }
+
+    def dehydrate_date(self, bundle):
+        """Fucking UNIX timestamps."""
+        return int(bundle.data['date'].strftime("%s"))
