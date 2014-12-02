@@ -14,8 +14,8 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         self.update_members_urls()
         members = Member.objects.all()
-        # for member in members:
-        #     self.parse_member(member)
+        for member in members:
+            self.parse_member(member)
 
     def update_members_urls(self):
         """Parse http://ec.europa.eu/commission/2014-2019/, get the URLs and
@@ -57,4 +57,14 @@ class Command(BaseCommand):
         """Parse every member in the database and add his agenda to our
         database.
         """
-        pass
+        try:
+            request = requests.get(member.url + '/agenda_en')
+        except requests.exceptions.RequestException as e:
+            print e
+            return
+
+        soup = BeautifulSoup(request.content)
+        meetings = soup.find_all(class_='views-row')
+
+        # Skip the first item because it is the header
+        meetings = meetings[1:]
