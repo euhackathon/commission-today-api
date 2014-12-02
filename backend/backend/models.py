@@ -23,6 +23,8 @@ class Organization(models.Model):
     lobbyists = models.IntegerField()
     lobbyists_with_access = models.IntegerField()
     explore_url = models.CharField(max_length=128)
+    def __unicode__(self):
+        return self.name
 
 class Meeting(models.Model):
     date = models.DateField()
