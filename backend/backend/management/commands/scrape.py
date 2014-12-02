@@ -57,7 +57,7 @@ class Command(BaseCommand):
         president = soup.find(class_='team-members-president')
         url = president.find('a')['href']
         photoUrl = president.find('img')['src']
-        name = member.find(class_='member-details-name').get_text()
+        name = 'Jean-Claude Juncker'
         rank = 'President'
         portofolioModel = Portofolio(name='President')
         portofolioModel.save()
