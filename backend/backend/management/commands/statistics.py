@@ -9,4 +9,4 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         for meeting in Meeting.objects.all():
-            print "{0};{1}".format(meeting.description, meeting.member.portofolio.name)
+            print "{0};{1}".format(meeting.description.encode('utf-8'), meeting.member.portofolio.name)
