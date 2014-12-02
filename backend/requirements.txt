@@ -5,3 +5,4 @@ python-dateutil==2.3
 python-mimeparse==0.1.4
 six==1.8.0
 wsgiref==0.1.2
+django-cors-headers==0.13
