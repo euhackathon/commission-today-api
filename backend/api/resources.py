@@ -2,6 +2,7 @@ from tastypie.constants import ALL
 from tastypie.fields import ToOneField
 from tastypie.resources import ModelResource
 from backend.models import Portofolio, Member, Meeting
+import calendar
 
 
 class PortofolioResource(ModelResource):
@@ -36,4 +37,5 @@ class MeetingResource(ModelResource):
 
     def dehydrate_date(self, bundle):
         """Fucking UNIX timestamps."""
-        return int(bundle.data['date'].strftime("%s"))
+        x = bundle.data['date']
+        return calendar.timegm(x.timetuple())
