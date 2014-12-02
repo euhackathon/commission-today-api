@@ -53,6 +53,21 @@ class Command(BaseCommand):
             else:
                 print 'was already saved', name
 
+        # Also get the president because he is special
+        president = soup.find(class_='team-members-president')
+        url = president.find('a')['href']
+        photoUrl = president.find('img')['src']
+        name = member.find(class_='member-details-name').get_text()
+        rank = 'President'
+        portofolioModel = Portofolio(name='President')
+        portofolioModel.save()
+        presidentModel = Member(name=name,
+                                photoUrl=photoUrl,
+                                rank=rank,
+                                portofolio=portofolioModel,
+                                url=url)
+        presidentModel.save()
+
     def parse_member(self, member):
         """Parse every member in the database and add his agenda to our
         database.
