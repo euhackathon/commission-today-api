@@ -43,6 +43,7 @@ class Command(BaseCommand):
                 portofolioModel = Portofolio(name=portofolio)
                 portofolioModel.save()
 
+            portofolioModel = Portofolio.objects.get(name=portofolio)
             if not Member.objects.filter(name=name):
                 memberModel = Member(name=name,
                                      photoUrl=photoUrl,
