@@ -1,5 +1,5 @@
 from tastypie.resources import ModelResource
-from backend.models import Portofolio
+from backend.models import Portofolio, Member, Meeting
 
 
 class PortofolioResource(ModelResource):
