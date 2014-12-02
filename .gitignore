@@ -1,1 +1,11 @@
+# Local database
 backend/db.sqlite3
+
+src/js/vendor/bower_components/*
+/node_modules/*
+.sass-cache/*
+.grunt/*
+
+# Ignore temporary directories
+www/
+www/*
