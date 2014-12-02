@@ -10,6 +10,7 @@ class PortofolioResource(ModelResource):
         allowed_methods = ['get']
 
 class MemberResource(ModelResource):
+    portofolio = ToOneField(PortofolioResource, 'portofolio', full=True)
     class Meta:
         queryset = Member.objects.all()
         allowed_methods = ['get']
