@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from django.core.management.base import BaseCommand, CommandError
-from backend.models import Member, Portofolio
+from backend.models import Member, Portofolio, Meeting
 import requests
 from bs4 import BeautifulSoup
 
@@ -57,8 +57,9 @@ class Command(BaseCommand):
         """Parse every member in the database and add his agenda to our
         database.
         """
+        url = member.url.split('_')[0] + '/agenda_en'
         try:
-            request = requests.get(member.url + '/agenda_en')
+            request = requests.get(url)
         except requests.exceptions.RequestException as e:
             print e
             return
@@ -68,3 +69,30 @@ class Command(BaseCommand):
 
         # Skip the first item because it is the header
         meetings = meetings[1:]
+
+        for meeting in meetings:
+            description = meeting.find('h3').get_text()
+            date = self.get_date_of_meeting(meeting.find(class_='day').get_text())
+            if not Meeting.objects.filter(member=member,
+                                  description=description,
+                                  date=date):
+                meeting = Meeting(member=member,
+                                  description=description,
+                                  date=date,
+                                  lobby=False)
+                meeting.save()
+                print 'saved', description
+            else:
+                print 'already saved', description
+
+    def get_date_of_meeting(self, dayString):
+        try:
+            day = int(dayString)
+        except ValueError as e:
+            print 'Could not convert {0} to int.'.format(dayString)
+            # TODO @palcu: fix this
+            day = datetime.now().day
+
+        return datetime(month=datetime.now().month,
+                        year=datetime.now().year,
+                        day=day)
