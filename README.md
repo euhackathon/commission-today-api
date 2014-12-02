@@ -7,6 +7,7 @@ Discover the agenda of the EU Commissioners.
 
 1. `cd backend`
 2. `pip install -r requirements.txt`
+3. `python manage.py migrate`
 3. `python manage.py createdata`
 4. `python runserver`
 5. Visit the [entry point](http://localhost:8000/api/v1/?format=json)
