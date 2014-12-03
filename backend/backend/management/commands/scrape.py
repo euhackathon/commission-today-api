@@ -126,11 +126,12 @@ class Command(BaseCommand):
             else:
                 print 'already saved'
             memberModel = Member.objects.get(name=memberName)
-            meeting = Meeting(date=date,
-                              description=description,
-                              member=memberModel,
-                              lobby=True)
-            meeting.save()
+            if not Meeting.objects.filter(date=date, description=description):
+                meeting = Meeting(date=date,
+                                  description=description,
+                                  member=memberModel,
+                                  lobby=True)
+                meeting.save()
 
     def parse_member(self, member):
         """Parse every member in the database and add his agenda to our
@@ -152,9 +153,8 @@ class Command(BaseCommand):
         for meeting in meetings:
             description = meeting.find('h3').get_text()
             date = self.get_date_of_meeting(meeting.find(class_='day').get_text())
-            if not Meeting.objects.filter(member=member,
-                                  description=description,
-                                  date=date):
+            if not Meeting.objects.filter(description=description,
+                                          date=date):
                 meeting = Meeting(member=member,
                                   description=description,
                                   date=date,
