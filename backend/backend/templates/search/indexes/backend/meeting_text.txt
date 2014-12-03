@@ -3,5 +3,7 @@
 {% if object.lobby %}
   {% if not object.organization.registered %}
     'unregistered'
+  {% else %}
+    'registered'
   {% endif %}
 {% endif %}
