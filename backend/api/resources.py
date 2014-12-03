@@ -22,12 +22,14 @@ class PortofolioResource(ModelResource):
 class MemberResource(ModelResource):
     portofolio = ToOneField(PortofolioResource, 'portofolio', full=True)
     class Meta:
+        limit = 1000
         queryset = Member.objects.all()
         allowed_methods = ['get']
 
 
 class OrganizationResource(ModelResource):
     class Meta:
+        limit = 1000
         queryset = Organization.objects.all()
         allowed_methods = ['get']
 
@@ -37,6 +39,7 @@ class MeetingResource(ModelResource):
     organization = ToOneField(OrganizationResource, 'organization', full=True,
                               null=True)
     class Meta:
+        limit = 1000
         queryset = Meeting.objects.all()
         allowed_methods = ['get']
         filtering = {
