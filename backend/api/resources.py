@@ -38,6 +38,12 @@ class OrganizationResource(ModelResource):
         queryset = Organization.objects.all()
         allowed_methods = ['get']
 
+    def dehydrate(self, bundle):
+        money = bundle.data.get('money')
+        if money:
+            bundle.data['money'] = "{:,}".format(money)
+        return bundle
+
 
 class MeetingResource(ModelResource):
     member = ToOneField(MemberResource, 'member', full=True)
