@@ -33,5 +33,7 @@ class Meeting(models.Model):
     lobby = models.BooleanField(default=False)
     # TODO: @palcu make a many to many relationship
     organization = models.ForeignKey(Organization, null=True)
+
+    ordering = ['date']
     def __unicode__(self):
         return self.description
