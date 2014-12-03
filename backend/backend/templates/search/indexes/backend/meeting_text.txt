@@ -1,7 +1,7 @@
 {{ object.description }}
 {{ object.member.name }}
-{% if object.organization.registered %}
-  'registered'
-{% else %}
-  'unregistered'
+{% if object.lobby %}
+  {% if object.organization %}
+    'unregistered'
+  {% endif %}
 {% endif %}
