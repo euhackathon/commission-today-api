@@ -79,7 +79,11 @@ class Command(BaseCommand):
             return
 
         soup = BeautifulSoup(request.content)
-        urls = soup.find_all(class_='views-field-field-biography-agenda-text')[0].find_all('a')
+        divs = soup.find_all(class_='views-field-field-biography-agenda-text')
+        # TODO @palcu: fix this
+        if not len(divs):
+            return
+        urls = divs[0].find_all('a')
 
         # TODO @palcu: parse also the first table when we have an example
         self.parse_table(urls[1]['href'], member)
