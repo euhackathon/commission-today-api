@@ -32,7 +32,7 @@ class Meeting(models.Model):
     member = models.ForeignKey(Member)
     lobby = models.BooleanField(default=False)
     # TODO: @palcu make a many to many relationship
-    organization = models.ForeignKey(Organization, null=True)
+    organization = models.ForeignKey(Organization, null=True, blank=True)
 
     ordering = ['date']
     def __unicode__(self):
