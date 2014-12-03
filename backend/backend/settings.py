@@ -38,7 +38,8 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'backend',
     'tastypie',
-    'corsheaders'
+    'corsheaders',
+    'haystack'
 )
 
 MIDDLEWARE_CLASSES = (
@@ -90,3 +91,11 @@ STATIC_URL = '/static/'
 
 # Fuck tastypie
 TASTYPIE_DEFAULT_FORMATS = ['json']
+
+# Search
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
+        'PATH': os.path.join(os.path.dirname(__file__), 'whoosh_index'),
+    },
+}

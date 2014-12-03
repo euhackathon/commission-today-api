@@ -1,6 +1,9 @@
 # Local database
 backend/db.sqlite3
 
+# Search
+backend/backend/whoosh_index/
+
 src/js/vendor/bower_components/*
 /node_modules/*
 .sass-cache/*

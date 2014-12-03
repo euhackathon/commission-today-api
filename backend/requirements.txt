@@ -9,3 +9,5 @@ six==1.8.0
 wsgiref==0.1.2
 django-cors-headers==0.13
 requests==2.5.0
+django-haystack==2.3.1
+whoosh==2.6.0
