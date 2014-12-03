@@ -18,12 +18,11 @@ class Member(models.Model):
         return self.name
 
 class Organization(models.Model):
-    name = models.CharField(max_length=128)
-    money = models.IntegerField()
-    lobbyists = models.IntegerField()
-    lobbyists_with_access = models.IntegerField()
-    registered = models.BooleanField(default=False)
-    explore_url = models.CharField(max_length=128)
+    name = models.CharField(max_length=128, null=True, blank=True)
+    money = models.IntegerField(null=True, blank=True)
+    lobbyists = models.IntegerField(null=True, blank=True)
+    registered = models.BooleanField(default=False, blank=True)
+    explore_url = models.CharField(max_length=128, blank=True)
     def __unicode__(self):
         return self.name
 
