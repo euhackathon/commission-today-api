@@ -51,6 +51,7 @@ class MeetingResource(ModelResource):
             'date': ALL,
             'member': ALL
         }
+        ordering = ['date']
 
     def dehydrate_date(self, bundle):
         """Fucking UNIX timestamps."""
