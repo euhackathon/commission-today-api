@@ -15,7 +15,7 @@ class Command(BaseCommand):
         self.update_members_urls()
         members = Member.objects.all()
         for member in members:
-            # self.parse_member(member)
+            self.parse_member(member)
             self.parse_cabinet(member)
 
     def update_members_urls(self):
